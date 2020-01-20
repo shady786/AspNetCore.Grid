@@ -10,7 +10,7 @@
 
 @font-face {
     src: url("../mvc-grid/fonts/grid-glyphs.woff") format("woff");
-    font-family: "GridGlyphs";
+    font-family: GridGlyphs;
 }
 
 .mvc-grid {
@@ -56,7 +56,7 @@
 .mvc-grid-filter {
     background-color: rgba(0, 0, 0, 0.03);
     transition: background-color 0.5s;
-    font-family: "GridGlyphs";
+    font-family: GridGlyphs;
     position: absolute;
     font-weight: bold;
     cursor: pointer;
@@ -98,6 +98,17 @@
     font-size: 0.9em;
     content: "\0043";
     opacity: 0.15;
+}
+
+.mvc-grid-sort span {
+    position: absolute;
+    font-weight: bold;
+    text-align: left;
+    font-size: 0.7em;
+    color: #adacac;
+    width: 33%;
+    right: 0;
+    top: 40%;
 }
 
 .mvc-grid .desc .mvc-grid-sort::after,

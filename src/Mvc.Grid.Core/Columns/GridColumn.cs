@@ -24,10 +24,11 @@ namespace NonFactors.Mvc.Grid
         public Expression<Func<T, TValue>> Expression { get; set; }
 
         IGridColumnSort IGridColumn.Sort => Sort;
-        public virtual IGridColumnSort<T, TValue> Sort { get; set; }
+        IGridColumnSort<T> IGridColumn<T>.Sort => Sort;
+        public IGridColumnSort<T, TValue> Sort { get; set; }
 
         IGridColumnFilter IGridColumn.Filter => Filter;
-        public virtual IGridColumnFilter<T, TValue> Filter { get; set; }
+        public IGridColumnFilter<T, TValue> Filter { get; set; }
 
         public GridColumn(IGrid<T> grid, Expression<Func<T, TValue>> expression)
         {
@@ -45,7 +46,7 @@ namespace NonFactors.Mvc.Grid
 
         public virtual IQueryable<T> Process(IQueryable<T> items)
         {
-            return Sort.Apply(Filter.Apply(items));
+            return Filter.Apply(items);
         }
         public virtual IHtmlContent ValueFor(IGridRow<Object> row)
         {
@@ -85,13 +86,13 @@ namespace NonFactors.Mvc.Grid
             try
             {
                 if (RenderValue != null)
-                    return RenderValue((row.Model as T)!, row.Index);
+                    return RenderValue((T)row.Model, row.Index);
 
                 Type type = Nullable.GetUnderlyingType(typeof(TValue)) ?? typeof(TValue);
                 if (type.GetTypeInfo().IsEnum)
-                    return EnumValue(type, ExpressionValue((row.Model as T)!)!.ToString()!);
+                    return EnumValue(type, ExpressionValue((T)row.Model)!.ToString()!);
 
-                return ExpressionValue((row.Model as T)!);
+                return ExpressionValue((T)row.Model);
             }
             catch (NullReferenceException)
             {

@@ -152,12 +152,18 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
             Assert.Equal(expected, actual);
         }
 
-        [Fact]
-        public void Filterable_EnablesFilter()
+        [Theory]
+        [InlineData(null, true)]
+        [InlineData(true, true)]
+        [InlineData(false, false)]
+        public void Filterable_Type_SetsIsEnabled(Boolean? current, Boolean enabled)
         {
-            column.Filter.IsEnabled = false;
+            column.Filter.IsEnabled = current;
 
-            Assert.True(column.Filterable(GridFilterType.Single).Filter.IsEnabled);
+            Boolean? actual = column.Filterable(GridFilterType.Single).Filter.IsEnabled;
+            Boolean? expected = enabled;
+
+            Assert.Equal(expected, actual);
         }
 
         [Fact]
@@ -208,36 +214,32 @@ namespace NonFactors.Mvc.Grid.Tests.Unit
         }
 
         [Fact]
-        public void InitialSort_SetsInitialSortOrder()
+        public void Sortable_SetsFirstOrder()
         {
-            GridSortOrder? actual = column.InitialSort(GridSortOrder.Desc).Sort.InitialOrder;
+            GridSortOrder? actual = column.Sortable(GridSortOrder.Desc).Sort.FirstOrder;
             GridSortOrder? expected = GridSortOrder.Desc;
 
             Assert.Equal(expected, actual);
         }
 
-        [Fact]
-        public void InitialSort_ReturnsColumn()
+        [Theory]
+        [InlineData(null, true)]
+        [InlineData(true, true)]
+        [InlineData(false, false)]
+        public void Sortable_FirstOrder_SetsIsEnabled(Boolean? current, Boolean enabled)
         {
-            Object expected = column;
-            Object actual = column.InitialSort(GridSortOrder.Desc);
+            column.Sort.IsEnabled = current;
 
-            Assert.Same(expected, actual);
-        }
-
-        [Fact]
-        public void FirstSort_SetsFirstOrder()
-        {
-            GridSortOrder? actual = column.FirstSort(GridSortOrder.Desc).Sort.FirstOrder;
-            GridSortOrder? expected = GridSortOrder.Desc;
+            Boolean? actual = column.Sortable(GridSortOrder.Desc).Sort.IsEnabled;
+            Boolean? expected = enabled;
 
             Assert.Equal(expected, actual);
         }
 
         [Fact]
-        public void FirstSort_ReturnsColumn()
+        public void Sortable_FirstOrder_ReturnsColumn()
         {
-            Object actual = column.FirstSort(GridSortOrder.Desc);
+            Object actual = column.Sortable(GridSortOrder.Desc);
             Object expected = column;
 
             Assert.Same(expected, actual);

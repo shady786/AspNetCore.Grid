@@ -25,6 +25,10 @@ namespace NonFactors.Mvc.Grid
 
                 return (Int32)Math.Ceiling(TotalRows / (Double)RowsPerPage);
             }
+            set
+            {
+                TotalPages = value;
+            }
         }
         public virtual Int32 CurrentPage
         {
@@ -106,7 +110,10 @@ namespace NonFactors.Mvc.Grid
 
         public virtual IQueryable<T> Process(IQueryable<T> items)
         {
-            TotalRows = items.Count();
+            if(TotalRows == 0)
+            {
+                TotalRows = items.Count();
+            }            
 
             if (RowsPerPage == 0)
                 return items;
@@ -114,7 +121,12 @@ namespace NonFactors.Mvc.Grid
             if (!GridQuery.IsOrdered(items))
                 items = items.OrderBy(item => 0);
 
-            return items.Skip((CurrentPage - 1) * RowsPerPage).Take(RowsPerPage);
+            if(TotalRows == items.Count())
+            {
+                return items.Skip((CurrentPage - 1) * RowsPerPage).Take(RowsPerPage);
+            }
+
+            return items;
         }
     }
 }

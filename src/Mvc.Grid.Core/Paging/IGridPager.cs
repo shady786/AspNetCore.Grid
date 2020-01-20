@@ -5,7 +5,7 @@ namespace NonFactors.Mvc.Grid
 {
     public interface IGridPager
     {
-        Int32 TotalPages { get; }
+        Int32 TotalPages { get; set; }
         Int32 TotalRows { get; set; }
 
         Int32 CurrentPage { get; set; }

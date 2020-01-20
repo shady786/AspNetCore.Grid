@@ -44,6 +44,7 @@ namespace NonFactors.Mvc.Grid
 
             Columns = new GridColumns<T>(this);
             Rows = new GridRows<T>(this);
+            Pager = new GridPager<T>(this);
         }
     }
 }
